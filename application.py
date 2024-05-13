@@ -104,10 +104,15 @@ if __name__ == '__main__':
     model = load_model("mlp_model.h5")
     MinMaxScaler = joblib.load('mmScaler')
     ser = serial.Serial('COM12', 115200)
-    #!!!!!看这里，改串口
+    #设置串口
+    distance = 300
+    # 设置实际距离，单位mm
+    isLoS = 1
+    # 设置是否是LoS环境，1为是0为否
     with open('FTM_Predict.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         # writer.writerow(["SN", "Name", "Contribution"])
+
         if ser.is_open:
             print("serial has opened.")
 
@@ -121,6 +126,8 @@ if __name__ == '__main__':
                     print(data)
                     params = data.split(',')
                     # print(params)
+                    # params.append(isLoS)
+                    params.append(distance)
                     writer.writerow(params)
                     # pred_dist = exec_predict(params[0], params[1], 5)
                     # if int(params[2]) >= len(anchor_positions):
