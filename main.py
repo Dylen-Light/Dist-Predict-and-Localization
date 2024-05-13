@@ -30,16 +30,16 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-data=pd.read_excel('FTM_Predict.csv')
+data=pd.read_excel('kpoeh-xvq4s.xls')
 data = DataFrame(data, dtype=float)
 data=data.iloc[:,:]
 train_Standard = data.iloc[:1800,:]
 test_Standard = data.iloc[1800:,:]
-train_X,train_y = train_Standard.iloc[:,:-1],train_Standard.iloc[:,-1]  #除最后一列，仅最后一列
-test_X,test_y = test_Standard.iloc[:,:-1],test_Standard.iloc[:,-1]
+# train_X,train_y = train_Standard.iloc[:,:-1],train_Standard.iloc[:,-1]  #除最后一列，仅最后一列
+# test_X,test_y = test_Standard.iloc[:,:-1],test_Standard.iloc[:,-1]
 
-# train_X,train_y = train_Standard.iloc[:,5:-1],train_Standard.iloc[:5,-1]  #除最后一列，仅最后一列
-# test_X,test_y = test_Standard.iloc[:,5:-1],test_Standard.iloc[:5,-1]
+train_X,train_y = train_Standard.iloc[:,5:-1],train_Standard.iloc[:,-1]
+test_X,test_y = test_Standard.iloc[:,5:-1],test_Standard.iloc[:,-1]
 
 train_X, test_X=train_X.values, test_X.values
 train_y, test_y=train_y.values, test_y.values
