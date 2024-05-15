@@ -24,6 +24,7 @@ from sklearn.preprocessing import MinMaxScaler
 # from statsmodels.tsa.seasonal import seasonal_decompose
 import tensorflow as tf
 import seaborn as sns
+from sklearn.utils import shuffle
 
 import os
 
@@ -31,11 +32,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-data = pd.read_excel('FTM_Predict.xls')
+data = pd.read_excel('FTM_LoS_or_NLoS.xls')
+data = shuffle(data)
 data = DataFrame(data, dtype=float)
+# print(data)
 data = data.iloc[:, :]
-train_Standard = data.iloc[:1800, :]
-test_Standard = data.iloc[1800:, :]
+train_Standard = data.iloc[:800, :]
+test_Standard = data.iloc[800:, :]
 # train_X,train_y = train_Standard.iloc[:,:-1],train_Standard.iloc[:,-1]  #除最后一列，仅最后一列
 # test_X,test_y = test_Standard.iloc[:,:-1],test_Standard.iloc[:,-1]
 
@@ -87,9 +90,9 @@ model.compile(loss='binary_crossentropy', optimizer='rmsprop')  # ,metrics=['acc
 
 # 拟合模型
 batchsize = 10
-history = model.fit(train_X, train_y, epochs=100, batch_size=batchsize, validation_data=(test_X, test_y))
+history = model.fit(train_X, train_y, epochs=150, batch_size=batchsize, validation_data=(test_X, test_y))
 model.summary()
-model.save('mlp_model.h5')
+model.save('mlp_model_los_or_nlos.h5')
 # print(history.history.keys())
 # plot history
 
@@ -121,7 +124,7 @@ yhat = MinMaxScaler.inverse_transform(yhat)
 train_y = MinMaxScaler.inverse_transform(train_y)
 test_y = MinMaxScaler.inverse_transform(test_y)
 yhat = yhat.reshape((len(yhat), 1))
-joblib.dump(MinMaxScaler, 'mmScaler')
+joblib.dump(MinMaxScaler, 'mmScaler_los_or_nlos')
 
 # calculate RMSE
 yhat = yhat.ravel()
